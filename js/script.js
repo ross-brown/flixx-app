@@ -32,7 +32,7 @@ async function displayPopularMovies() {
             </p>
           </div>
         `;
-    document.querySelector('#popular-movies').appendChild(div);
+    document.querySelector("#popular-movies").appendChild(div);
   });
 }
 
@@ -66,16 +66,20 @@ async function displayPopularShows() {
             </p>
           </div>
         `;
-    document.querySelector('#popular-shows').appendChild(div);
+    document.querySelector("#popular-shows").appendChild(div);
   });
 }
 
 // Display movie details
 async function displayMovieDetails() {
-  const movieID = window.location.search.split('=')[1];
+  const movieID = window.location.search.split("=")[1];
+
   const movie = await fetchAPIData(`movie/${movieID}`);
 
-  const div = document.createElement('div');
+  // Overlay for background image
+  displayBackgroundImage("movie", movie.backdrop_path);
+
+  const div = document.createElement("div");
 
   div.innerHTML = `
   <div class="details-top">
@@ -106,28 +110,48 @@ async function displayMovieDetails() {
     </p>
     <h5>Genres</h5>
     <ul class="list-group">
-      ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
+      ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join("")}
     </ul>
-    <a href="${movie.homepage}" target="_blank" class="btn">Visit Movie Homepage</a>
+    <a href="${
+      movie.homepage
+    }" target="_blank" class="btn">Visit Movie Homepage</a>
   </div>
 </div>
 <div class="details-bottom">
   <h2>Movie Info</h2>
   <ul>
-    <li><span class="text-secondary">Budget:</span> $${addCommasToNumber(movie.budget)}</li>
-    <li><span class="text-secondary">Revenue:</span> $${addCommasToNumber(movie.revenue)}</li>
-    <li><span class="text-secondary">Runtime:</span> ${movie.runtime} minutes</li>
+    <li><span class="text-secondary">Budget:</span> $${addCommasToNumber(
+      movie.budget
+    )}</li>
+    <li><span class="text-secondary">Revenue:</span> $${addCommasToNumber(
+      movie.revenue
+    )}</li>
+    <li><span class="text-secondary">Runtime:</span> ${
+      movie.runtime
+    } minutes</li>
     <li><span class="text-secondary">Status:</span> ${movie.status}</li>
   </ul>
   <h4>Production Companies</h4>
   <div class="list-group">
-    ${movie.production_companies.map(company => `<span>${company.name}</span>`).join(', ')}
+    ${movie.production_companies
+      .map((company) => `<span>${company.name}</span>`)
+      .join(", ")}
   </div>
 </div>
   `;
 
-  document.querySelector('#movie-details').appendChild(div)
+  document.querySelector("#movie-details").appendChild(div);
+}
 
+// Display Backdrop On Details Pages
+function displayBackgroundImage(type, backgroundpath) {
+  const overlayDiv = document.createElement("div");
+
+  overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${backgroundpath})`;
+
+  overlayDiv.classList.add("overlay");
+  
+  document.querySelector(`#${type}-details`).appendChild(overlayDiv);
 }
 
 // Fetch data from TMDB API
@@ -149,11 +173,11 @@ async function fetchAPIData(endpoint) {
 }
 
 function showSpinner() {
-  document.querySelector('.spinner').classList.add('show');
+  document.querySelector(".spinner").classList.add("show");
 }
 
 function hideSpinner() {
-  document.querySelector('.spinner').classList.remove('show');
+  document.querySelector(".spinner").classList.remove("show");
 }
 
 // Highlight active link
@@ -167,7 +191,7 @@ function highlightActiveLink() {
 }
 
 function addCommasToNumber(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 // Init App

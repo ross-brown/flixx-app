@@ -39,7 +39,9 @@ async function displayPopularMovies() {
           <div class="card-body">
             <h5 class="card-title">${movie.title}</h5>
             <p class="card-text">
-              <small class="text-muted">Release: ${movie.release_date}</small>
+              <small class="text-muted">Release: ${formatDate(
+                movie.release_date
+              )}</small>
             </p>
           </div>
         `;
@@ -73,7 +75,9 @@ async function displayPopularShows() {
           <div class="card-body">
             <h5 class="card-title">${show.name}</h5>
             <p class="card-text">
-              <small class="text-muted">Release: ${show.first_air_date}</small>
+              <small class="text-muted">Release: ${formatDate(
+                show.first_air_date
+              )}</small>
             </p>
           </div>
         `;
@@ -115,7 +119,7 @@ async function displayMovieDetails() {
       <i class="fas fa-star text-primary"></i>
       ${movie.vote_average.toFixed(1)} / 10
     </p>
-    <p class="text-muted">Release Date: ${movie.release_date}</p>
+    <p class="text-muted">Release Date: ${formatDate(movie.release_date)}</p>
     <p>
       ${movie.overview}
     </p>
@@ -187,7 +191,7 @@ async function displayShowDetails() {
       <i class="fas fa-star text-primary"></i>
       ${show.vote_average.toFixed(1)} / 10
     </p>
-    <p class="text-muted">Last Air Date: ${show.last_air_date}</p>
+    <p class="text-muted">Last Air Date: ${formatDate(show.last_air_date)}</p>
     <p>
       ${show.overview}
     </p>
@@ -296,8 +300,8 @@ function displaySearchResults(results) {
             <p class="card-text">
               <small class="text-muted">Release: ${
                 global.search.type === "movie"
-                  ? result.release_date
-                  : result.first_air_date
+                  ? formatDate(result.release_date)
+                  : formatDate(result.first_air_date)
               }</small>
             </p>
           </div>
@@ -462,6 +466,11 @@ function showAlert(message, className = "error") {
 
 function addCommasToNumber(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function formatDate(date) {
+  let fullDate = new Date(date);
+  return fullDate.toDateString().slice(4);
 }
 
 // Init App
